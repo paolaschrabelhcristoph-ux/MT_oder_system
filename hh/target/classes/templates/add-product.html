@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>添加商品</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Microsoft YaHei', Arial, sans-serif;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(255, 200, 200, 0.3) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(255, 220, 200, 0.3) 0%, transparent 20%),
+                linear-gradient(135deg, #f9f0f0 0%, #f0e6e6 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        .container {
+            max-width: 600px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.9);
+            border-radius: 12px;
+            padding: 30px;
+            box-shadow: 0 8px 32px rgba(139, 69, 19, 0.2);
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+        }
+
+        .header {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+
+        .header h1 {
+            color: #8B4513;
+            margin-bottom: 10px;
+        }
+
+        .form-group {
+            margin-bottom: 20px;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 8px;
+            color: #5a3e36;
+            font-weight: 500;
+        }
+
+        .form-group input,
+        .form-group textarea,
+        .form-group select {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #d9c2b3;
+            border-radius: 6px;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.8);
+            transition: border-color 0.3s ease;
+        }
+
+        .form-group input:focus,
+        .form-group textarea:focus,
+        .form-group select:focus {
+            outline: none;
+            border-color: #d4a083;
+            box-shadow: 0 0 0 2px rgba(212, 160, 131, 0.2);
+        }
+
+        .attribute-section {
+            margin-top: 20px;
+            padding: 15px;
+            background: rgba(212, 160, 131, 0.1);
+            border-radius: 6px;
+        }
+
+        .btn-group {
+            display: flex;
+            gap: 15px;
+            margin-top: 20px;
+        }
+
+        .btn {
+            flex: 1;
+            padding: 12px;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            text-decoration: none;
+            text-align: center;
+            display: inline-block;
+        }
+
+        .save-btn {
+            background: linear-gradient(135deg, #d4a083 0%, #b87333 100%);
+            color: white;
+        }
+
+        .cancel-btn {
+            background: linear-gradient(135deg, #95a5a6 0%, #7f8c8d 100%);
+            color: white;
+        }
+
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+        }
+
+        .message {
+            padding: 12px;
+            border-radius: 6px;
+            margin-bottom: 15px;
+            text-align: center;
+        }
+
+        .success {
+            background-color: rgba(46, 204, 113, 0.2);
+            color: #27ae60;
+            border: 1px solid #2ecc71;
+        }
+
+        .error {
+            background-color: rgba(231, 76, 60, 0.2);
+            color: #e74c3c;
+            border: 1px solid #e74c3c;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <div class="header">
+        <h1>添加奶茶商品</h1>
+    </div>
+
+    <div id="message" class="message" style="display: none;"></div>
+
+    <form id="productForm">
+        <div class="form-group">
+            <label for="name">商品名称:</label>
+            <input type="text" id="name" name="name" required>
+        </div>
+
+        <div class="form-group">
+            <label for="description">商品描述:</label>
+            <textarea id="description" name="description" rows="4" required></textarea>
+        </div>
+
+        <div class="form-group">
+            <label for="price">价格:</label>
+            <input type="number" id="price" name="price" step="0.01" min="0" required>
+        </div>
+
+        <div class="form-group">
+            <label for="imageUrl">图片URL:</label>
+            <input type="text" id="imageUrl" name="imageUrl" required>
+        </div>
+
+        <!-- 温度属性 -->
+        <div class="attribute-section">
+            <h3>温度属性</h3>
+            <div class="form-group">
+                <label>
+                    <input type="radio" name="temperature" value="多冰" checked> 多冰
+                </label>
+                <label>
+                    <input type="radio" name="temperature" value="少冰"> 少冰
+                </label>
+                <label>
+                    <input type="radio" name="temperature" value="常温"> 常温
+                </label>
+                <label>
+                    <input type="radio" name="temperature" value="热"> 热
+                </label>
+            </div>
+        </div>
+
+        <!-- 份量属性 -->
+        <div class="attribute-section">
+            <h3>份量属性</h3>
+            <div class="form-group">
+                <label>
+                    <input type="radio" name="size" value="小" checked> 小
+                </label>
+                <label>
+                    <input type="radio" name="size" value="中"> 中
+                </label>
+                <label>
+                    <input type="radio" name="size" value="大"> 大
+                </label>
+                <label>
+                    <input type="radio" name="size" value="超大"> 超大
+                </label>
+            </div>
+        </div>
+
+        <div class="btn-group">
+            <button type="submit" class="btn save-btn">添加商品</button>
+            <a href="/products" class="btn cancel-btn">取消</a>
+        </div>
+    </form>
+</div>
+
+<script>
+    document.getElementById('productForm').addEventListener('submit', function(e) {
+        e.preventDefault();
+        
+        const formData = {
+            name: document.getElementById('name').value,
+            description: document.getElementById('description').value,
+            price: parseFloat(document.getElementById('price').value),
+            imageUrl: document.getElementById('imageUrl').value
+        };
+        
+        fetch('/api/products', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.text())
+        .then(data => {
+            const messageDiv = document.getElementById('message');
+            if (data === 'success') {
+                messageDiv.className = 'message success';
+                messageDiv.textContent = '商品添加成功！';
+                messageDiv.style.display = 'block';
+                
+                // 清空表单
+                document.getElementById('productForm').reset();
+            } else {
+                messageDiv.className = 'message error';
+                messageDiv.textContent = '商品添加失败: ' + data;
+                messageDiv.style.display = 'block';
+            }
+        })
+        .catch(error => {
+            const messageDiv = document.getElementById('message');
+            messageDiv.className = 'message error';
+            messageDiv.textContent = '请求失败: ' + error.message;
+            messageDiv.style.display = 'block';
+        });
+    });
+</script>
+</body>
+</html>

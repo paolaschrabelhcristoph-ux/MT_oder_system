@@ -1,0 +1,174 @@
+<!DOCTYPE html>
+<html lang="zh-CN" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>用户注册</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: Arial, sans-serif;
+            background:
+                radial-gradient(circle at 10% 20%, rgba(200, 230, 255, 0.3) 0%, transparent 20%),
+                radial-gradient(circle at 90% 80%, rgba(220, 240, 255, 0.3) 0%, transparent 20%),
+                linear-gradient(135deg, #f0f5ff 0%, #f8f7f0 100%);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            margin: 0;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        .title {
+            position: absolute;
+            top: 20px;
+            width: 100%;
+            text-align: center;
+            color: #8B4513;
+            font-size: 48px;
+            font-weight: bold;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.7);
+            font-family: 'Microsoft YaHei', sans-serif;
+            z-index: 5;
+        }
+
+        .container {
+            background-color: rgba(255, 255, 255, 0.85);
+            padding: 30px;
+            border-radius: 12px;
+            box-shadow: 0 8px 32px rgba(139, 69, 19, 0.2);
+            width: 320px;
+            z-index: 10;
+            backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            position: relative;
+        }
+
+        .form-group {
+            margin-bottom: 18px;
+        }
+
+        label {
+            display: block;
+            margin-bottom: 6px;
+            color: #5a3e36;
+            font-weight: 500;
+        }
+
+        input[type="text"], input[type="password"], input[type="email"] {
+            width: 100%;
+            padding: 10px;
+            border: 1px solid #d9c2b3;
+            border-radius: 6px;
+            box-sizing: border-box;
+            background-color: rgba(255, 255, 255, 0.8);
+            transition: border-color 0.3s ease;
+            font-size: 14px;
+        }
+
+        input[type="text"]:focus, input[type="password"]:focus, input[type="email"]:focus {
+            outline: none;
+            border-color: #d4a083;
+            box-shadow: 0 0 0 2px rgba(212, 160, 131, 0.2);
+        }
+
+        button {
+            width: 100%;
+            padding: 12px;
+            background: linear-gradient(135deg, #83c5be 0%, #6d9d8b 100%);
+            color: white;
+            border: none;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+
+        button:hover {
+            background: linear-gradient(135deg, #6d9d8b 0%, #5a7d6d 100%);
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(131, 197, 190, 0.3);
+        }
+
+        .error {
+            color: #e74c3c;
+            font-size: 14px;
+            margin-top: 5px;
+            text-align: center;
+            padding: 8px;
+            background-color: rgba(231, 76, 60, 0.1);
+            border-radius: 4px;
+        }
+
+        .success {
+            color: #27ae60;
+            font-size: 14px;
+            margin-top: 5px;
+            text-align: center;
+            padding: 8px;
+            background-color: rgba(39, 174, 96, 0.1);
+            border-radius: 4px;
+        }
+
+        .link {
+            text-align: center;
+            margin-top: 18px;
+        }
+
+        .link a {
+            color: #83c5be;
+            text-decoration: none;
+            font-weight: 500;
+            transition: color 0.3s ease;
+        }
+
+        .link a:hover {
+            color: #6d9d8b;
+            text-decoration: underline;
+        }
+
+        h2 {
+            text-align: center;
+            color: #8B4513;
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+<body>
+<div class="title">奶茶点单系统</div>
+<div class="container">
+    <h2>用户注册</h2>
+    <form th:action="@{/register}" method="post">
+        <div class="form-group">
+            <label for="username">用户名:</label>
+            <input type="text" id="username" name="username" required>
+        </div>
+        <div class="form-group">
+            <label for="password">密码:</label>
+            <input type="password" id="password" name="password" required>
+        </div>
+        <div class="form-group">
+            <label for="email">邮箱:</label>
+            <input type="email" id="email" name="email" required>
+        </div>
+        <div th:if="${error}" class="error">
+            <span th:text="${error}"></span>
+        </div>
+        <div th:if="${success}" class="success">
+            <span th:text="${success}"></span>
+        </div>
+        <button type="submit">注册</button>
+    </form>
+    <div class="link">
+        <a th:href="@{/login}">已有账号？立即登录</a>
+    </div>
+</div>
+</body>
+</html>
