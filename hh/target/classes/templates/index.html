@@ -24,6 +24,7 @@
             display: flex;
             max-width: 1200px;
             margin: 0 auto;
+            min-height: 100vh;
         }
 
         .sidebar {
@@ -83,6 +84,8 @@
             box-shadow: 0 8px 32px rgba(139, 69, 19, 0.1);
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.3);
+            overflow-y: auto;
+            max-height: calc(100vh - 40px);
         }
 
         .header {
@@ -520,10 +523,16 @@
 
         .content-section {
             display: none;
+            animation: fadeIn 0.3s ease-in;
         }
 
         .content-section.active {
             display: block;
+        }
+
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
         }
 
         /* 添加商品样式 */
@@ -874,7 +883,6 @@
             background: #e0e0e0;
         }
 
-        /* 订单部分样式 */
         .orders-section {
             background-color: rgba(255, 255, 255, 0.85);
             padding: 25px;
@@ -885,82 +893,82 @@
             backdrop-filter: blur(10px);
             border: 1px solid rgba(255, 255, 255, 0.3);
             position: relative;
-        }
+          }
 
-        .orders-title {
+          .orders-title {
             color: #8B4513;
             font-size: 24px;
             margin-bottom: 20px;
             text-align: center;
-        }
+          }
 
-        .order-item {
+          .order-item {
             background-color: #f9f9f9;
             padding: 15px;
             margin-bottom: 15px;
             border-radius: 8px;
             border-left: 4px solid #83c5be;
-        }
+          }
 
-        .order-header {
+          .order-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
             margin-bottom: 10px;
-        }
+          }
 
-        .order-id {
+          .order-id {
             font-weight: bold;
             color: #5a3e36;
-        }
+          }
 
-        .order-time {
+          .order-time {
             color: #888;
             font-size: 14px;
-        }
+          }
 
-        .order-status {
+          .order-status {
             padding: 4px 10px;
             border-radius: 20px;
             font-size: 12px;
             font-weight: bold;
-        }
+          }
 
-        .status-pending {
+          .status-pending {
             background-color: #fff3cd;
             color: #856404;
-        }
+          }
 
-        .status-paid {
+          .status-paid {
             background-color: #d1ecf1;
             color: #0c5460;
-        }
+          }
 
-        .status-completed {
+          .status-completed {
             background-color: #d4edda;
             color: #155724;
-        }
+          }
 
-        .order-items {
+          .order-items {
             margin-top: 10px;
-        }
+          }
 
-        .order-item-detail {
+          .order-item-detail {
             display: flex;
             justify-content: space-between;
             padding: 5px 0;
-        }
+          }
 
-        .order-total {
+          .order-total {
             margin-top: 15px;
             padding-top: 10px;
             border-top: 1px solid #eee;
             font-weight: bold;
             text-align: right;
             color: #8B4513;
-        }
+          }
 
-        .view-orders-btn {
+          .view-orders-btn {
             background: linear-gradient(135deg, #83c5be 0%, #6d9d8b 100%);
             color: white;
             border: none;
@@ -973,41 +981,62 @@
             width: 100%;
             margin-top: 15px;
             transition: all 0.3s ease;
-        }
+          }
 
-        .view-orders-btn:hover {
+          .view-orders-btn:hover {
             background: linear-gradient(135deg, #6d9d8b 0%, #5a7d6d 100%);
             transform: translateY(-2px);
             box-shadow: 0 4px 12px rgba(131, 197, 190, 0.3);
+          }
+
+        /* 在index.html的CSS中添加购物车计数徽章样式 */
+        .cart-count-badge {
+            background-color: #e74c3c;
+            color: white;
+            border-radius: 50%;
+            padding: 2px 6px;
+            font-size: 12px;
+            margin-left: 5px;
+            display: inline-block;
+            min-width: 18px;
+            text-align: center;
+            line-height: 1;
         }
+
     </style>
 </head>
 <body>
 <div class="container">
+    <!-- 在index.html的sidebar中使用正确的函数调用 -->
+    <!-- 在index.html中修改sidebar中的导航链接 -->
     <div class="sidebar">
         <h2>导航菜单</h2>
         <div class="nav-item">
-            <a href="#" class="nav-link" onclick="toggleSubmenu('tea-types')">商品购物</a>
+            <a href="javascript:void(0)" class="nav-link" onclick="toggleSubmenu('tea-types')">商品购物</a>
             <div id="tea-types" class="sub-menu">
-                <a href="#" class="nav-link" onclick="showContent('products')">全部商品</a>
+                <a href="javascript:void(0)" class="nav-link" onclick="showContent('products')">全部商品</a>
                 <div id="type-list">
                     <!-- 动态加载的类型按钮将插入到这里 -->
                 </div>
             </div>
         </div>
         <div class="nav-item">
-            <a href="#" class="nav-link" onclick="showContent('add-product')">添加商品</a>
+            <a href="javascript:void(0)" class="nav-link" onclick="showContent('add-product')">添加商品</a>
         </div>
         <div class="nav-item">
-            <a href="#" class="nav-link" onclick="loadProfile()">个人中心</a>
+            <a href="javascript:void(0)" class="nav-link" onclick="loadProfile()">个人中心</a>
         </div>
         <div class="nav-item">
-            <a href="#" class="nav-link" onclick="loadCart()">购物车</a>
+            <a href="javascript:void(0)" class="nav-link" onclick="loadCart()">购物车
+                <span id="cart-item-count" class="cart-count-badge"></span>
+            </a>
         </div>
         <div class="nav-item">
-            <a href="#" class="nav-link" onclick="showContent('orders')">我的订单</a>
+            <a href="javascript:void(0)" class="nav-link" onclick="showContent('orders')">我的订单</a>
         </div>
+
     </div>
+
 
     <div class="main-content">
         <!-- 产品展示区域 -->
@@ -1268,6 +1297,19 @@
                 </div>
             </form>
         </div>
+
+        <div id="orders-content" class="content-section">
+            <div class="header">
+                <h1>我的订单</h1>
+            </div>
+
+            <div class="orders-section">
+                <h2 class="orders-title">订单列表</h2>
+                <div id="orders-list">
+                    <!-- 订单项将动态加载 -->
+                </div>
+            </div>
+        </div>
     </div>
 
     <!-- 商品选择弹窗 -->
@@ -1343,6 +1385,7 @@
             </div>
         </div>
     </div>
+
 </div>
 
 <script>
@@ -1350,38 +1393,96 @@
 
     // 切换子菜单
     function toggleSubmenu(id) {
-        const submenu = document.getElementById(id);
-        submenu.classList.toggle('active');
+        try {
+            const submenu = document.getElementById(id);
+            if (submenu) {
+                submenu.classList.toggle('active');
+            }
+        } catch (error) {
+            console.error('Error toggling submenu:', error);
+        }
     }
 
-    // 显示内容区域
-    function showContent(section) {
+    // 显示内容区域 - 修复版本
+    // 显示内容区域 - 修复版本
+// 当前活动页面状态
+let currentActivePage = 'products';
+
+// 显示内容区域 - 修复版本
+// 修复showContent函数 - 移除过于严格的页面状态检查
+function showContent(section) {
+    try {
         // 隐藏所有内容区域
         document.querySelectorAll('.content-section').forEach(el => {
             el.classList.remove('active');
         });
 
         // 显示指定内容区域
-        document.getElementById(section + '-content').classList.add('active');
-
-        // 如果是产品页面，加载产品数据
-        if (section === 'products') {
-            loadProducts();
+        const targetSection = document.getElementById(section + '-content');
+        if (targetSection) {
+            targetSection.classList.add('active');
         }
 
-        // 如果是添加商品页面，加载商品类型
-        if (section === 'add-product') {
-            loadProductTypesForForm();
-        }
+        // 更新当前活动页面状态
+        currentActivePage = section;
 
-        // 如果是购物车页面，加载购物车数据
-        if (section === 'cart') {
-            loadCart();
+        // 根据不同页面加载相应数据
+        switch(section) {
+            case 'products':
+                loadProducts();
+                break;
+            case 'add-product':
+                loadProductTypesForForm();
+                break;
+            case 'cart':
+                loadCart();
+                break;
+            case 'orders':
+                loadOrders();
+                break;
+            case 'profile':
+                loadProfile();
+                break;
+            case 'edit-profile':
+                loadEditProfile();
+                break;
+            case 'change-password':
+                loadChangePassword();
+                break;
         }
+    } catch (error) {
+        console.error('Error showing content:', error);
     }
+}
+
+
+
+// 检查用户权限并加载内容的辅助函数
+function checkUserPermissionAndLoad(loadFunction) {
+    fetch('/api/profile')
+        .then(response => response.json())
+        .then(data => {
+            if (!data.success) {
+                alert('请先登录');
+                window.location.href = '/login';
+                return;
+            }
+            // 用户已登录，执行加载函数
+            loadFunction && loadFunction();
+        })
+        .catch(error => {
+            console.error('Error checking user permission:', error);
+            window.location.href = '/login';
+        });
+}
+
 
     // 加载个人中心
-    function loadProfile() {
+    // 加载个人中心
+// 加载个人中心
+// 修复loadProfile函数 - 确保在正确页面显示内容
+function loadProfile() {
+    try {
         fetch('/api/profile')
             .then(response => response.json())
             .then(data => {
@@ -1406,19 +1507,32 @@
                         document.getElementById('avatar-text').textContent = user.username.charAt(0).toUpperCase();
                     }
 
-                    showContent('profile');
+                    // 确保个人中心页面被显示
+                    if (currentActivePage !== 'profile') {
+                        currentActivePage = 'profile';
+                        document.querySelectorAll('.content-section').forEach(el => {
+                            el.classList.remove('active');
+                        });
+                        document.getElementById('profile-content').classList.add('active');
+                    }
                 } else {
                     alert('请先登录');
                     window.location.href = '/login';
+                    return;
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
             });
+    } catch (error) {
+        console.error('Error loading profile:', error);
     }
+}
+
 
     // 加载编辑资料页面
     function loadEditProfile() {
+    try {
         fetch('/api/profile')
             .then(response => response.json())
             .then(data => {
@@ -1442,20 +1556,32 @@
                 } else {
                     alert('请先登录');
                     window.location.href = '/login';
+                    return;
                 }
             })
             .catch(error => {
                 console.error('Error:', error);
+                window.location.href = '/login';
             });
+    } catch (error) {
+        console.error('Error loading edit profile:', error);
     }
+}
 
     // 加载购物车
-    function loadCart() {
-        fetch('/api/cart')
+    // 加载购物车
+// 修复loadCart函数 - 确保在正确页面显示内容
+// 加载购物车 - 确保每次调用都获取最新数据
+function loadCart() {
+    try {
+        // 清除可能的缓存标记，强制获取最新数据
+        fetch('/api/cart?_=' + new Date().getTime()) // 添加时间戳防止缓存
             .then(response => response.json())
             .then(data => {
                 const cartItems = document.getElementById('cart-items');
-                cartItems.innerHTML = '';
+                if (cartItems) {
+                    cartItems.innerHTML = '';
+                }
 
                 let total = 0;
 
@@ -1473,6 +1599,7 @@
                             <td>${item.quantity}</td>
                             <td>¥${subtotal}</td>
                             <td>
+                                <div>地址: ${item.deliveryAddress || '未设置'}</div>
                                 <button class="remove-btn" onclick="removeFromCart(${item.product.id})">移除</button>
                             </td>
                         `;
@@ -1484,150 +1611,50 @@
                     cartItems.appendChild(row);
                 }
 
-                document.getElementById('cart-total').textContent = total.toFixed(2);
-                showContent('cart');
+                const totalElement = document.getElementById('cart-total');
+                if (totalElement) {
+                    totalElement.textContent = total.toFixed(2);
+                }
+
+                // 确保购物车页面被显示
+                if (currentActivePage !== 'cart') {
+                    currentActivePage = 'cart';
+                    document.querySelectorAll('.content-section').forEach(el => {
+                        el.classList.remove('active');
+                    });
+                    document.getElementById('cart-content').classList.add('active');
+                }
             })
             .catch(error => {
-                console.error('Error:', error);
+                console.error('Error loading cart:', error);
             });
+    } catch (error) {
+        console.error('Error in loadCart:', error);
     }
+}
+
 
     // 加载修改密码页面
     function loadChangePassword() {
-        showContent('change-password');
+        try {
+            showContent('change-password');
+        } catch (error) {
+            console.error('Error loading change password:', error);
+        }
     }
 
-    // 提交资料修改
-    document.getElementById('profile-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const formData = {
-            username: document.getElementById('edit-username').value,
-            email: document.getElementById('edit-email').value
-        };
-
-        fetch('/api/profile/update', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            const messageDiv = document.getElementById('edit-profile-message');
-            if (data.success) {
-                messageDiv.className = 'message success';
-                messageDiv.textContent = '资料更新成功';
-                messageDiv.classList.remove('hidden');
-                // 延迟2秒后加载个人中心
-                setTimeout(() => {
-                    loadProfile();
-                }, 2000);
-            } else {
-                messageDiv.className = 'message error';
-                messageDiv.textContent = data.message || '更新失败';
-                messageDiv.classList.remove('hidden');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
-
-    // 提交头像上传
-    document.getElementById('avatar-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const formData = new FormData();
-        const fileInput = document.getElementById('avatarFile');
-
-        if (fileInput.files.length === 0) {
-            alert('请选择图片文件');
-            return;
-        }
-
-        formData.append('avatar', fileInput.files[0]);
-
-        fetch('/api/profile/upload-avatar', {
-            method: 'POST',
-            body: formData
-        })
-        .then(response => response.json())
-        .then(data => {
-            const messageDiv = document.getElementById('edit-profile-message');
-            if (data.success) {
-                messageDiv.className = 'message success';
-                messageDiv.textContent = '头像上传成功';
-                messageDiv.classList.remove('hidden');
-
-                // 更新头像显示
-                if (data.avatarPath) {
-                    document.getElementById('edit-avatar-img').src = data.avatarPath;
-                    document.getElementById('edit-avatar-img').style.display = 'block';
-                    document.getElementById('edit-avatar-text').style.display = 'none';
-
-                    // 也更新个人中心的头像
-                    document.getElementById('avatar-img').src = data.avatarPath;
-                    document.getElementById('avatar-text').style.display = 'none';
-                    document.getElementById('avatar-img').style.display = 'block';
-                }
-            } else {
-                messageDiv.className = 'message error';
-                messageDiv.textContent = data.message || '头像上传失败';
-                messageDiv.classList.remove('hidden');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
-
-    // 提交密码修改
-    document.getElementById('password-form').addEventListener('submit', function(e) {
-        e.preventDefault();
-
-        const formData = {
-            oldPassword: document.getElementById('oldPassword').value,
-            newPassword: document.getElementById('newPassword').value,
-            confirmNewPassword: document.getElementById('confirmNewPassword').value
-        };
-
-        fetch('/api/profile/change-password', {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json'
-            },
-            body: JSON.stringify(formData)
-        })
-        .then(response => response.json())
-        .then(data => {
-            const messageDiv = document.getElementById('change-password-message');
-            if (data.success) {
-                messageDiv.className = 'message success';
-                messageDiv.textContent = '密码修改成功';
-                messageDiv.classList.remove('hidden');
-            } else {
-                messageDiv.className = 'message error';
-                messageDiv.textContent = data.message || '密码修改失败';
-                messageDiv.classList.remove('hidden');
-            }
-        })
-        .catch(error => {
-            console.error('Error:', error);
-        });
-    });
-
     // 添加到购物车
-    function addToCart(productId) {
+    // 添加到购物车 - 修复版本
+function addToCart(productId) {
+    try {
         currentProduct = productId;
 
         // 获取商品信息
-        fetch(`/api/products`)
+        fetch('/api/products')
             .then(response => response.json())
             .then(data => {
                 if (data.success) {
-                    const product = data.products.find(p => p.id === productId);
+                    const product = data.products.find(p => p.id == productId);
                     if (product) {
                         // 填充弹窗内容
                         document.getElementById('modal-product-name').textContent = product.name;
@@ -1652,19 +1679,26 @@
             .catch(error => {
                 console.error('Error loading product:', error);
             });
+    } catch (error) {
+        console.error('Error adding to cart:', error);
     }
+}
 
-    // 添加到购物车（带属性）
-    function addToCartWithAttributes() {
+
+    // 添加商品到购物车（带属性）
+    // 添加商品到购物车（带属性）
+function addToCartWithAttributes() {
+    try {
         const temperature = document.querySelector('input[name="temperature"]:checked').value;
         const size = document.querySelector('input[name="size"]:checked').value;
-        const address = document.getElementById('delivery-address').value;
+        const deliveryAddress = document.getElementById('delivery-address').value;
 
-        if (!address) {
+        if (!deliveryAddress) {
             alert('请输入配送地址');
             return;
         }
 
+        // 发送请求到后端API添加商品到购物车
         fetch('/api/cart/add', {
             method: 'POST',
             headers: {
@@ -1673,14 +1707,25 @@
             body: JSON.stringify({
                 productId: currentProduct,
                 temperature: temperature,
-                size: size
+                size: size,
+                deliveryAddress: deliveryAddress
             })
         })
         .then(response => response.json())
         .then(data => {
             if (data.success) {
                 alert('商品已添加到购物车');
+
+                // 立即关闭弹窗
                 closeModal();
+
+                // 立即更新购物车计数显示
+                updateCartItemCount();
+
+                // 如果当前在购物车页面，立即重新加载购物车内容
+                if (currentActivePage === 'cart') {
+                    loadCart();
+                }
             } else {
                 alert('添加失败: ' + data.message);
             }
@@ -1689,23 +1734,51 @@
             console.error('Error:', error);
             alert('添加失败: ' + error.message);
         });
+    } catch (error) {
+        console.error('Error adding to cart with attributes:', error);
     }
+}
+
+// 更新购物车计数显示
+function updateCartItemCount() {
+    try {
+        fetch('/api/cart')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success && data.cartItems) {
+                    const itemCount = data.cartItems.reduce((total, item) => total + item.quantity, 0);
+
+                    // 更新购物车徽章显示
+                    const cartBadge = document.getElementById('cart-item-count');
+                    if (cartBadge) {
+                        cartBadge.textContent = itemCount;
+                        cartBadge.style.display = itemCount > 0 ? 'inline-block' : 'none';
+                    }
+                }
+            })
+            .catch(error => {
+                console.error('Error updating cart count:', error);
+            });
+    } catch (error) {
+        console.error('Error updating cart count:', error);
+    }
+}
+
+
 
     // 关闭弹窗
     function closeModal() {
-        document.getElementById('product-modal').style.display = 'none';
-    }
-
-    // 点击弹窗外部关闭
-    window.onclick = function(event) {
-        const modal = document.getElementById('product-modal');
-        if (event.target === modal) {
-            closeModal();
+        try {
+            document.getElementById('product-modal').style.display = 'none';
+        } catch (error) {
+            console.error('Error closing modal:', error);
         }
     }
 
-    // 从购物车移除
-    function removeFromCart(productId) {
+    // 从购物车移除商品
+    // 在index.html中修复removeFromCart函数
+function removeFromCart(productId) {
+    try {
         fetch('/api/cart/remove', {
             method: 'POST',
             headers: {
@@ -1716,18 +1789,244 @@
         .then(response => response.json())
         .then(data => {
             if (data.success) {
-                loadCart(); // 重新加载购物车
+                // 只在当前页面是购物车时重新加载
+                if (currentActivePage === 'cart') {
+                    loadCart(); // 重新加载购物车
+                }
+                // 更新购物车计数徽章
+                updateCartItemCount();
             } else {
-                alert('移除失败');
+                alert('移除失败: ' + (data.message || '未知错误'));
             }
         })
         .catch(error => {
             console.error('Error:', error);
+            alert('移除失败: ' + error.message);
         });
+    } catch (error) {
+        console.error('Error removing from cart:', error);
+        alert('移除失败: ' + error.message);
+    }
+}
+
+
+    // 加载产品列表
+    function loadProducts(typeId = null) {
+        try {
+            let url = '/api/products';
+            if (typeId) {
+                url = `/api/products/type/${typeId}`;
+            }
+
+            fetch(url)
+                .then(response => response.json())
+                .then(data => {
+                    const productGrid = document.getElementById('product-grid');
+                    if (productGrid) {
+                        productGrid.innerHTML = '';
+                    }
+
+                    if (data.success && data.products) {
+                        data.products.forEach(product => {
+                            const productCard = document.createElement('div');
+                            productCard.className = 'product-card';
+                            productCard.innerHTML = `
+                                <div class="product-image">
+                                    <img src="${product.imageUrl || ''}" alt="${product.name}" onerror="this.style.display='none';this.parentElement.querySelector('.product-image-text').style.display='flex';">
+                                    <div class="product-image-text" style="display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#8B4513; font-size:24px;">${product.name.charAt(0)}</div>
+                                </div>
+                                <div class="product-info">
+                                    <div>
+                                        <div class="product-name">${product.name}</div>
+                                        <div class="product-description">${product.description}</div>
+                                    </div>
+                                    <div class="product-price">¥${product.price}</div>
+                                </div>
+                                <button class="add-to-cart" onclick="addToCart(${product.id})">加入购物车</button>
+                            `;
+                            productGrid.appendChild(productCard);
+                        });
+                    } else {
+                        productGrid.innerHTML = '<p>暂无商品</p>';
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading products:', error);
+                    if (document.getElementById('product-grid')) {
+                        document.getElementById('product-grid').innerHTML = '<p>加载商品失败</p>';
+                    }
+                });
+        } catch (error) {
+            console.error('Error in loadProducts:', error);
+        }
     }
 
-    // 结算
-    function checkout() {
+    // 加载商品类型
+    function loadProductTypes() {
+        try {
+            fetch('/api/product-types')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.types) {
+                        // 在侧边栏添加类型按钮
+                        const typeList = document.getElementById('type-list');
+                        if (typeList) {
+                            typeList.innerHTML = '';
+                            data.types.forEach(type => {
+                                const link = document.createElement('a');
+                                link.href = 'javascript:void(0)';
+                                link.className = 'nav-link';
+                                link.textContent = type.name;
+                                link.onclick = () => showProductsByType(type.id);
+                                typeList.appendChild(link);
+                            });
+                        }
+
+                        // 在顶部筛选区域添加类型按钮
+                        const typeFilters = document.getElementById('type-filters');
+                        if (typeFilters) {
+                            typeFilters.innerHTML = '<button class="type-filter" onclick="loadProducts()">全部商品</button>';
+                            data.types.forEach(type => {
+                                const button = document.createElement('button');
+                                button.className = 'type-filter';
+                                button.textContent = type.name;
+                                button.onclick = () => showProductsByType(type.id);
+                                typeFilters.appendChild(button);
+                            });
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading product types:', error);
+                });
+        } catch (error) {
+            console.error('Error loading product types:', error);
+        }
+    }
+
+
+    // 加载商品类型（用于表单）
+    function loadProductTypesForForm() {
+        try {
+            fetch('/api/product-types')
+                .then(response => response.json())
+                .then(data => {
+                    if (data.success && data.types) {
+                        const typeSelect = document.getElementById('add-product-type');
+                        if (typeSelect) {
+                            typeSelect.innerHTML = '<option value="">请选择商品种类</option>';
+                            data.types.forEach(type => {
+                                const option = document.createElement('option');
+                                option.value = type.id;
+                                option.textContent = type.name;
+                                typeSelect.appendChild(option);
+                            });
+                        }
+                    }
+                })
+                .catch(error => {
+                    console.error('Error loading product types for form:', error);
+                });
+        } catch (error) {
+            console.error('Error loading product types for form:', error);
+        }
+    }
+
+    // 显示指定类型的商品
+    function showProductsByType(typeId) {
+        try {
+            showContent('products');
+            loadProducts(typeId);
+        } catch (error) {
+            console.error('Error showing products by type:', error);
+        }
+    }
+
+    // 加载订单
+    // 加载订单 - 确保正确显示订单状态
+// 在index.html中修复loadOrders函数
+// 在loadOrders函数中显示order_items信息
+function loadOrders() {
+    try {
+        fetch('/api/orders')
+        .then(response => response.json())
+        .then(data => {
+            if (currentActivePage !== 'orders') {
+                return;
+            }
+
+            const ordersList = document.getElementById('orders-list');
+            if (ordersList) {
+                ordersList.innerHTML = '';
+            }
+
+            if (data.success && data.orders && data.orders.length > 0) {
+                data.orders.forEach(order => {
+                    const orderItem = document.createElement('div');
+                    orderItem.className = 'order-item';
+
+                    // 计算订单总金额
+                    let totalAmount = 0;
+                    if (order.items) {
+                        order.items.forEach(item => {
+                            totalAmount += item.price * item.quantity;
+                        });
+                    }
+
+                    orderItem.innerHTML = `
+                        <div class="order-header">
+                            <div class="order-id">订单号: ${order.id}</div>
+                            <div class="order-time">${order.orderTime}</div>
+                            <div class="order-status status-${order.status.toLowerCase()}">${order.status}</div>
+                        </div>
+                        <div class="order-items">
+                            ${(order.items || []).map(item => `
+                                <div class="order-item-detail">
+                                    <div style="display: flex; align-items: center; margin-bottom: 8px;">
+                                        <img src="${item.product.imageUrl || ''}"
+                                             alt="${item.product.name}"
+                                             style="width: 50px; height: 50px; border-radius: 6px; margin-right: 10px;"
+                                             onerror="this.style.display='none';">
+                                        <div>
+                                            <div style="font-weight: bold;">${item.product.name}</div>
+                                            <div style="font-size: 12px; color: #666;">单价: ¥${item.price.toFixed(2)}</div>
+                                        </div>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <span>温度: ${item.temperature || '无'}</span>
+                                        <span>份量: ${item.size || '无'}</span>
+                                        <span>数量: ${item.quantity}</span>
+                                    </div>
+                                    <div style="display: flex; justify-content: space-between; margin-bottom: 5px;">
+                                        <span>小计: ¥${(item.price * item.quantity).toFixed(2)}</span>
+                                    </div>
+                                    <div>配送地址: ${item.deliveryAddress || '未设置'}</div>
+                                </div>
+                            `).join('')}
+                        </div>
+                        <div class="order-total">总计: ¥${totalAmount.toFixed(2)}</div>
+                    `;
+                    ordersList.appendChild(orderItem);
+                });
+            } else {
+                ordersList.innerHTML = '<p>暂无订单记录</p>';
+            }
+        })
+        .catch(error => {
+            console.error('Error loading orders:', error);
+            if (document.getElementById('orders-list')) {
+                document.getElementById('orders-list').innerHTML = '<p>加载订单失败</p>';
+            }
+        });
+    } catch (error) {
+        console.error('Error in loadOrders:', error);
+    }
+}
+
+    // 结算购物车
+    // 在checkout函数中确保正确跳转和显示
+function checkout() {
+    try {
         fetch('/api/cart/checkout', {
             method: 'POST'
         })
@@ -1735,17 +2034,106 @@
         .then(data => {
             if (data.success) {
                 alert('订单创建成功');
-                loadCart(); // 重新加载购物车，此时应该为空
+
+                // 清空购物车显示
+                const cartItems = document.getElementById('cart-items');
+                if (cartItems) {
+                    cartItems.innerHTML = '<tr><td colspan="7">购物车为空</td></tr>';
+                }
+                document.getElementById('cart-total').textContent = '0.00';
+
+                // 更新购物车徽章
+                updateCartItemCount();
+
+                // 跳转到订单页面并加载最新订单
+                showContent('orders');
+                loadOrders(); // 立即加载最新订单
             } else {
                 alert('结算失败: ' + (data.message || ''));
             }
         })
         .catch(error => {
             console.error('Error:', error);
+            alert('结算失败: ' + error.message);
+        });
+    } catch (error) {
+        console.error('Error in checkout:', error);
+    }
+}
+
+
+    // 页面加载时显示产品列表
+    // 页面加载时显示产品列表
+// 页面加载时显示产品列表
+document.addEventListener('DOMContentLoaded', function() {
+    try {
+        // 检查用户登录状态
+        fetch('/api/profile')
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    // 用户已登录，初始化页面状态
+                    currentActivePage = 'products';
+                    showContent('products');
+                    loadProductTypes();
+                    loadProducts();
+                } else {
+                    // 用户未登录，重定向到登录页面
+                    window.location.href = '/login';
+                }
+            })
+            .catch(error => {
+                console.error('Error checking login status:', error);
+                window.location.href = '/login';
+            });
+    } catch (error) {
+        console.error('Error in DOMContentLoaded:', error);
+    }
+});
+
+
+    // 点击弹窗外部关闭
+    window.onclick = function(event) {
+        try {
+            const modal = document.getElementById('product-modal');
+            if (event.target === modal) {
+                closeModal();
+            }
+        } catch (error) {
+            console.error('Error in window.onclick:', error);
+        }
+    }
+
+    // 表单提交事件处理
+    if (document.getElementById('profile-form')) {
+        document.getElementById('profile-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // 表单处理逻辑...
         });
     }
 
-    // 添加商品表单提交
+    if (document.getElementById('avatar-form')) {
+        document.getElementById('avatar-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // 头像上传处理逻辑...
+        });
+    }
+
+    if (document.getElementById('password-form')) {
+        document.getElementById('password-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // 密码修改处理逻辑...
+        });
+    }
+
+    if (document.getElementById('add-product-form')) {
+        document.getElementById('add-product-form').addEventListener('submit', function(e) {
+            e.preventDefault();
+            // 添加商品处理逻辑...
+        });
+    }
+
+    // 添加商品表单处理
     document.getElementById('add-product-form').addEventListener('submit', function(e) {
         e.preventDefault();
 
@@ -1754,7 +2142,7 @@
             description: document.getElementById('add-product-description').value,
             price: parseFloat(document.getElementById('add-product-price').value),
             imageUrl: document.getElementById('add-product-imageUrl').value,
-            productTypeId: parseInt(document.getElementById('add-product-type').value) || null // 商品类型ID
+            productTypeId: document.getElementById('add-product-type').value || null
         };
 
         fetch('/api/products', {
@@ -1774,11 +2162,6 @@
 
                 // 清空表单
                 document.getElementById('add-product-form').reset();
-
-                // 延迟2秒后跳转到商品列表
-                setTimeout(() => {
-                    showContent('products');
-                }, 2000);
             } else {
                 messageDiv.className = 'message error';
                 messageDiv.textContent = '商品添加失败: ' + data;
@@ -1793,117 +2176,146 @@
         });
     });
 
-    // 加载产品列表
-    function loadProducts(typeId = null) {
-        let url = '/api/products';
-        if (typeId) {
-            url = `/api/products/type/${typeId}`;
+    // 修改密码表单处理
+    document.getElementById('password-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = {
+            oldPassword: document.getElementById('oldPassword').value,
+            newPassword: document.getElementById('newPassword').value,
+            confirmNewPassword: document.getElementById('confirmNewPassword').value
+        };
+
+        fetch('/api/profile/change-password', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            const messageDiv = document.getElementById('change-password-message');
+            if (data.success) {
+                messageDiv.className = 'message success';
+                messageDiv.textContent = data.message || '密码修改成功！';
+                messageDiv.classList.remove('hidden');
+                // 清空表单
+                document.getElementById('password-form').reset();
+            } else {
+                messageDiv.className = 'message error';
+                messageDiv.textContent = data.message || '密码修改失败';
+                messageDiv.classList.remove('hidden');
+            }
+        })
+        .catch(error => {
+            const messageDiv = document.getElementById('change-password-message');
+            messageDiv.className = 'message error';
+            messageDiv.textContent = '请求失败: ' + error.message;
+            messageDiv.classList.remove('hidden');
+        });
+    });
+
+    // 编辑资料表单处理
+    document.getElementById('profile-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = {
+            username: document.getElementById('edit-username').value,
+            email: document.getElementById('edit-email').value
+        };
+
+        fetch('/api/profile/update', {
+            method: 'POST',
+            headers: {
+                'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(formData)
+        })
+        .then(response => response.json())
+        .then(data => {
+            const messageDiv = document.getElementById('edit-profile-message');
+            if (data.success) {
+                messageDiv.className = 'message success';
+                messageDiv.textContent = '资料更新成功！';
+                messageDiv.classList.remove('hidden');
+                // 重新加载个人资料
+                loadProfile();
+            } else {
+                messageDiv.className = 'message error';
+                messageDiv.textContent = data.message || '更新失败';
+                messageDiv.classList.remove('hidden');
+            }
+        })
+        .catch(error => {
+            const messageDiv = document.getElementById('edit-profile-message');
+            messageDiv.className = 'message error';
+            messageDiv.textContent = '请求失败: ' + error.message;
+            messageDiv.classList.remove('hidden');
+        });
+    });
+
+    // 头像上传表单处理
+    document.getElementById('avatar-form').addEventListener('submit', function(e) {
+        e.preventDefault();
+
+        const formData = new FormData();
+        const fileInput = document.getElementById('avatarFile');
+
+        if (fileInput.files.length === 0) {
+            alert('请选择头像文件');
+            return;
         }
 
-        fetch(url)
-            .then(response => response.json())
-            .then(data => {
-                const productGrid = document.getElementById('product-grid');
-                productGrid.innerHTML = '';
+        formData.append('avatar', fileInput.files[0]);
 
-                if (data.success && data.products) {
-                    data.products.forEach(product => {
-                        const productCard = document.createElement('div');
-                        productCard.className = 'product-card';
-                        productCard.innerHTML = `
-                            <div class="product-image">
-                                <img src="${product.imageUrl || ''}" alt="${product.name}" onerror="this.style.display='none';this.parentElement.querySelector('.product-image-text').style.display='flex';">
-                                <div class="product-image-text" style="display:flex; align-items:center; justify-content:center; width:100%; height:100%; color:#8B4513; font-size:24px;">${product.name.charAt(0)}</div>
-                            </div>
-                            <div class="product-info">
-                                <div>
-                                    <div class="product-name">${product.name}</div>
-                                    <div class="product-description">${product.description}</div>
-                                </div>
-                                <div class="product-price">¥${product.price}</div>
-                            </div>
-                            <button class="add-to-cart" onclick="addToCart(${product.id})">加入购物车</button>
-                        `;
-                        productGrid.appendChild(productCard);
-                    });
-                } else {
-                    productGrid.innerHTML = '<p>暂无商品</p>';
-                }
-            })
-            .catch(error => {
-                console.error('Error loading products:', error);
-                document.getElementById('product-grid').innerHTML = '<p>加载商品失败</p>';
-            });
-    }
-
-    // 加载商品类型 - 用于侧边栏和筛选按钮
-    function loadProductTypes() {
-        fetch('/api/product-types')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && data.types) {
-                    // 在侧边栏添加类型按钮
-                    const typeList = document.getElementById('type-list');
-                    typeList.innerHTML = '';
-                    data.types.forEach(type => {
-                        const link = document.createElement('a');
-                        link.href = '#';
-                        link.className = 'nav-link';
-                        link.textContent = type.name;
-                        link.onclick = () => showProductsByType(type.id);
-                        typeList.appendChild(link);
-                    });
-
-                    // 在顶部筛选区域添加类型按钮
-                    const typeFilters = document.getElementById('type-filters');
-                    typeFilters.innerHTML = '<button class="type-filter" onclick="loadProducts()">全部商品</button>'; // 清空后添加全部商品按钮
-                    data.types.forEach(type => {
-                        const button = document.createElement('button');
-                        button.className = 'type-filter';
-                        button.textContent = type.name;
-                        button.onclick = () => showProductsByType(type.id);
-                        typeFilters.appendChild(button);
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error loading product types:', error);
-            });
-    }
-
-    // 加载商品类型 - 用于添加商品表单的下拉框
-    function loadProductTypesForForm() {
-        fetch('/api/product-types')
-            .then(response => response.json())
-            .then(data => {
-                if (data.success && data.types) {
-                    const typeSelect = document.getElementById('add-product-type');
-                    typeSelect.innerHTML = '<option value="">请选择商品种类</option>'; // 清空选项并添加默认选项
-                    data.types.forEach(type => {
-                        const option = document.createElement('option');
-                        option.value = type.id;
-                        option.textContent = type.name;
-                        typeSelect.appendChild(option);
-                    });
-                }
-            })
-            .catch(error => {
-                console.error('Error loading product types for form:', error);
-            });
-    }
-
-    // 显示指定类型的商品
-    function showProductsByType(typeId) {
-        showContent('products');
-        loadProducts(typeId);
-    }
-
-    // 页面加载时显示产品列表
-    document.addEventListener('DOMContentLoaded', function() {
-        showContent('products');
-        loadProductTypes();
-        loadProducts();
+        fetch('/api/profile/upload-avatar', {
+            method: 'POST',
+            body: formData
+        })
+        .then(response => response.json())
+        .then(data => {
+            if (data.success) {
+                alert('头像上传成功！');
+                // 重新加载个人资料以更新头像
+                loadProfile();
+            } else {
+                alert('头像上传失败: ' + data.message);
+            }
+        })
+        .catch(error => {
+            alert('上传失败: ' + error.message);
+        });
     });
+
+    // 确保导航链接点击事件正常工作
+function initNavigation() {
+    // 绑定个人中心导航点击事件
+    const profileLink = document.querySelector('a[onclick="loadProfile()"]');
+    if (profileLink) {
+        profileLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showContent('profile');
+        });
+    }
+
+    // 绑定购物车导航点击事件
+    const cartLink = document.querySelector('a[onclick="loadCart()"]');
+    if (cartLink) {
+        cartLink.addEventListener('click', function(e) {
+            e.preventDefault();
+            showContent('cart');
+        });
+    }
+}
+
+// 在DOM加载完成后初始化导航
+document.addEventListener('DOMContentLoaded', function() {
+    initNavigation();
+});
+
 </script>
+
+
 </body>
 </html>

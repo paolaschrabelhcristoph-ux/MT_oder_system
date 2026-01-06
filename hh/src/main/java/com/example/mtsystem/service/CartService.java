@@ -6,6 +6,7 @@ import com.example.mtsystem.entity.CartItem;
 import com.example.mtsystem.repository.CartItemRepository;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.servlet.http.HttpSession;
 import java.util.HashMap;
@@ -49,7 +50,8 @@ public class CartService {
      * @param size 份量选项
      * @return 添加成功返回true，否则返回false
      */
-    public boolean addToCart(Long productId, HttpSession session, String temperature, String size) {
+    // 在CartService.java中修改addToCart方法
+    public boolean addToCart(Long productId, HttpSession session, String temperature, String size, String deliveryAddress) {
         User user = (User) session.getAttribute("currentUser");
         if (user == null) {
             return false;
@@ -69,29 +71,78 @@ public class CartService {
                         (existingItem.getSize() != null && existingItem.getSize().equals(size)))) {
             // 如果存在，增加数量
             existingItem.setQuantity(existingItem.getQuantity() + 1);
-            cartItemRepository.save(existingItem);
+            existingItem.setDeliveryAddress(deliveryAddress); // 更新配送地址
+            cartItemRepository.save(existingItem); // 立即保存到数据库
         } else {
             // 如果不存在，创建新的购物车项
             CartItem cartItem = new CartItem(user, product, 1, product.getPrice(), temperature, size);
-            cartItemRepository.save(cartItem);
+            cartItem.setDeliveryAddress(deliveryAddress); // 设置配送地址
+            cartItemRepository.save(cartItem); // 立即保存到数据库
         }
+
+        // 清除缓存，强制下次获取时重新查询
+        session.removeAttribute("cachedCartItems");
+
         return true;
     }
 
-    /**
-     * 从购物车中移除商品
-     * @param productId 商品ID
-     * @param session HTTP会话
-     * @return 移除成功返回true，否则返回false
-     */
+
+    // 在CartService.java中确保removeFromCart方法正确处理
+    // 在CartService.java中为removeFromCart方法添加@Transactional注解
+    @Transactional
     public boolean removeFromCart(Long productId, HttpSession session) {
         User user = (User) session.getAttribute("currentUser");
         if (user == null) {
             return false;
         }
 
-        cartItemRepository.deleteByUserAndProduct_Id(user, productId);
-        return true;
+        try {
+            cartItemRepository.deleteByUserAndProduct_Id(user, productId);
+
+            // 清除缓存，强制下次获取时重新查询
+            session.removeAttribute("cachedCartItems");
+            return true;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
+    }
+    @Transactional
+    public boolean checkout(HttpSession session) {
+        User user = (User) session.getAttribute("currentUser");
+        if (user == null) {
+            return false;
+        }
+
+        List<CartItem> cartItems = cartItemRepository.findByUser(user);
+        if (cartItems.isEmpty()) {
+            return false;
+        }
+
+        // 创建订单项列表，避免循环依赖
+        java.util.List<com.example.mtsystem.entity.OrderItem> orderItems = new java.util.ArrayList<>();
+        // 在CartService.java的checkout方法中
+        for (CartItem cartItem : cartItems) {
+            // 创建订单项，保留购物车项的所有信息
+            com.example.mtsystem.entity.OrderItem orderItem = new com.example.mtsystem.entity.OrderItem(
+                    cartItem.getProduct(), cartItem.getQuantity(), cartItem.getPrice());
+            orderItem.setTemperature(cartItem.getTemperature()); // 保留温度信息
+            orderItem.setSize(cartItem.getSize()); // 保留份量信息
+            orderItem.setDeliveryAddress(cartItem.getDeliveryAddress()); // 保留配送地址
+            orderItems.add(orderItem);
+        }
+
+
+        // 创建订单并保存
+        com.example.mtsystem.entity.Order order = orderService.createOrder(orderItems, user);
+
+        // 清空购物车 - 这个操作也需要事务
+        cartItemRepository.deleteByUser(user);
+
+        // 清除缓存
+        session.removeAttribute("cachedCartItems");
+
+        return order != null;
     }
 
     /**
@@ -149,40 +200,6 @@ public class CartService {
     }
 
     /**
-     * 结算购物车
-     * @param session HTTP会话
-     * @return 结算结果
-     */
-    public boolean checkout(HttpSession session) {
-        User user = (User) session.getAttribute("currentUser");
-        if (user == null) {
-            return false;
-        }
-
-        List<CartItem> cartItems = cartItemRepository.findByUser(user);
-        if (cartItems.isEmpty()) {
-            return false;
-        }
-
-        // 创建订单项列表，避免循环依赖
-        java.util.List<com.example.mtsystem.entity.OrderItem> orderItems = new java.util.ArrayList<>();
-        for (CartItem cartItem : cartItems) {
-            // 直接使用购物车项中的产品和价格，避免再次查询数据库
-            com.example.mtsystem.entity.OrderItem orderItem = new com.example.mtsystem.entity.OrderItem(
-                    cartItem.getProduct(), cartItem.getQuantity(), cartItem.getPrice());
-            orderItems.add(orderItem);
-        }
-
-        // 创建订单并保存
-        com.example.mtsystem.entity.Order order = orderService.createOrder(orderItems, user);
-
-        // 清空购物车
-        cartItemRepository.deleteByUser(user);
-
-        return order != null;
-    }
-
-    /**
      * 获取购物车中商品总数
      * @param session HTTP会话
      * @return 商品总数
@@ -211,6 +228,19 @@ public class CartService {
         if (user == null) {
             return java.util.Collections.emptyList();
         }
-        return cartItemRepository.findByUser(user);
+
+        // 尝试从session中获取缓存的购物车项
+        List<CartItem> cachedCartItems = (List<CartItem>) session.getAttribute("cachedCartItems");
+        if (cachedCartItems != null) {
+            return cachedCartItems;
+        }
+
+        // 如果没有缓存，则从数据库获取
+        List<CartItem> cartItems = cartItemRepository.findByUserOptimized(user); // 使用优化查询
+
+        // 将结果缓存到session中
+        session.setAttribute("cachedCartItems", cartItems);
+
+        return cartItems;
     }
 }

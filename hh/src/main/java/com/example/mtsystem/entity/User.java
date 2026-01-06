@@ -10,44 +10,51 @@ public class User {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column(unique = true, nullable = false)
+    @Column(unique = true)
     private String username;
 
-    @Column(nullable = false)
     private String password;
 
-    @Column
+    @Column(unique = true)
     private String email;
 
-    @Column(name = "avatar_path")
-    private String avatarPath;  // 存储头像文件路径
+    private String avatarPath;
 
-    @Column(name = "created_at")
-    private LocalDateTime createdAt;
-
-    @Column(name = "updated_at")
-    private LocalDateTime updatedAt;
-
-    @Column(name = "last_login_time")
     private LocalDateTime lastLoginTime;
 
-    @Column(name = "active")
-    private Boolean active = true;
+    private LocalDateTime createdAt;
 
-    // 构造函数
+    private LocalDateTime updatedAt;
+
+    // 添加无参构造函数（JPA要求）
     public User() {
         this.createdAt = LocalDateTime.now();
         this.updatedAt = LocalDateTime.now();
     }
 
+    // 添加接受三个参数的构造函数
     public User(String username, String password, String email) {
-        this();
         this.username = username;
         this.password = password;
         this.email = email;
+        this.createdAt = LocalDateTime.now();
+        this.updatedAt = LocalDateTime.now();
     }
 
-    // Getter 和 Setter 方法
+    // 完整参数构造函数
+    public User(Long id, String username, String password, String email, String avatarPath,
+                LocalDateTime lastLoginTime, LocalDateTime createdAt, LocalDateTime updatedAt) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+        this.email = email;
+        this.avatarPath = avatarPath;
+        this.lastLoginTime = lastLoginTime;
+        this.createdAt = createdAt;
+        this.updatedAt = updatedAt;
+    }
+
+    // Getter和Setter方法
     public Long getId() { return id; }
     public void setId(Long id) { this.id = id; }
 
@@ -63,15 +70,12 @@ public class User {
     public String getAvatarPath() { return avatarPath; }
     public void setAvatarPath(String avatarPath) { this.avatarPath = avatarPath; }
 
+    public LocalDateTime getLastLoginTime() { return lastLoginTime; }
+    public void setLastLoginTime(LocalDateTime lastLoginTime) { this.lastLoginTime = lastLoginTime; }
+
     public LocalDateTime getCreatedAt() { return createdAt; }
     public void setCreatedAt(LocalDateTime createdAt) { this.createdAt = createdAt; }
 
     public LocalDateTime getUpdatedAt() { return updatedAt; }
     public void setUpdatedAt(LocalDateTime updatedAt) { this.updatedAt = updatedAt; }
-
-    public LocalDateTime getLastLoginTime() { return lastLoginTime; }
-    public void setLastLoginTime(LocalDateTime lastLoginTime) { this.lastLoginTime = lastLoginTime; }
-
-    public Boolean getActive() { return active; }
-    public void setActive(Boolean active) { this.active = active; }
 }

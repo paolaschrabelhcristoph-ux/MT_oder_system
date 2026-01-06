@@ -24,6 +24,7 @@ public class UserController {
         return "login";
     }
 
+    // 在 UserController.java 中修改登录成功后的重定向
     @PostMapping("/login")
     public String login(@RequestParam String username,
                         @RequestParam String password,
@@ -34,12 +35,13 @@ public class UserController {
             User user = userService.findUserByUsername(username);
             model.addAttribute("success", "登录成功！");
             session.setAttribute("currentUser", user);
-            return "redirect:/index"; // 修改为跳转到 index 页面
+            return "redirect:/index"; // 修改为跳转到 index 页面，而不是 products 页面
         } else {
             model.addAttribute("error", "用户名或密码错误");
             return "login";
         }
     }
+
 
     // 显示注册页面
     @GetMapping("/register")

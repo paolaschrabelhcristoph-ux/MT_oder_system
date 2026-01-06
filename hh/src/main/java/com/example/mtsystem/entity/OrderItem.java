@@ -1,5 +1,7 @@
+// 在OrderItem类中添加地址字段
 package com.example.mtsystem.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import javax.persistence.*;
 
 @Entity
@@ -15,6 +17,7 @@ public class OrderItem {
 
     @ManyToOne
     @JoinColumn(name = "order_id")
+    @JsonIgnore  // 防止序列化时无限递归
     private Order order;
 
     @Column(nullable = false)
@@ -22,6 +25,15 @@ public class OrderItem {
 
     @Column(nullable = false)
     private Double price;
+
+    @Column
+    private String temperature; // 添加温度字段
+
+    @Column
+    private String size; // 添加份量字段
+
+    @Column
+    private String deliveryAddress; // 配送地址字段
 
     // 构造函数
     public OrderItem() {}
@@ -47,4 +59,13 @@ public class OrderItem {
 
     public Double getPrice() { return price; }
     public void setPrice(Double price) { this.price = price; }
+
+    public String getTemperature() { return temperature; }
+    public void setTemperature(String temperature) { this.temperature = temperature; }
+
+    public String getSize() { return size; }
+    public void setSize(String size) { this.size = size; }
+
+    public String getDeliveryAddress() { return deliveryAddress; }
+    public void setDeliveryAddress(String deliveryAddress) { this.deliveryAddress = deliveryAddress; }
 }
